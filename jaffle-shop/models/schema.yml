@@ -1,6 +1,21 @@
 version: 2
+
+sources:
+  - name: jaffle_shop
+    description: jaffle_shop schema in the raw db in Snowflake. 
+    database: raw
+    tables:
+      - name: orders
+      - name: customers
+
+  - name: stripe
+    description: stripe schema in the raw db in Snowflake. 
+    database: raw
+    tables:
+      - name: payment
+
 models:
-  - name: customers
+  - name: dim_customers
     description: One record per customer
     columns:
       - name: customer_id
@@ -18,6 +33,18 @@ models:
         tests:
           - unique
           - not_null
+  - name: fct_orders
+    description: One record per order
+    columns:
+      - name: order_id
+        description: Primary key
+        tests:
+          - unique
+          - not_null
+      - name: payment_amount
+        description: Total payments for an order.
+        tests:
+          - not_null
   - name: stg_orders
     description: This model cleans up order data
     columns:
@@ -27,6 +54,7 @@ models:
           - unique
           - not_null
       - name: status
+        description: "{{ doc('order_status') }}"
         tests:
           - accepted_values:
               values: ['placed', 'shipped', 'completed', 'return_pending', 'returned']
