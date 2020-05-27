@@ -2,12 +2,14 @@ version: 2
 
 sources:
   - name: jaffle_shop
+    description: jaffle_shop schema in the raw db in Snowflake. 
     database: raw
     tables:
       - name: orders
       - name: customers
 
   - name: stripe
+    description: stripe schema in the raw db in Snowflake. 
     database: raw
     tables:
       - name: payment
@@ -52,6 +54,7 @@ models:
           - unique
           - not_null
       - name: status
+        description: "{{ doc('order_status') }}"
         tests:
           - accepted_values:
               values: ['placed', 'shipped', 'completed', 'return_pending', 'returned']
