@@ -1,6 +1,6 @@
 version: 2
 models:
-  - name: customers
+  - name: dim_customers
     description: One record per customer
     columns:
       - name: customer_id
@@ -17,6 +17,18 @@ models:
         description: Primary key
         tests:
           - unique
+          - not_null
+  - name: fct_orders
+    description: One record per order
+    columns:
+      - name: order_id
+        description: Primary key
+        tests:
+          - unique
+          - not_null
+      - name: payment_amount
+        description: Total payments for an order.
+        tests:
           - not_null
   - name: stg_orders
     description: This model cleans up order data
